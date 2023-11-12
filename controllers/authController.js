@@ -3,6 +3,12 @@ const jwt = require('jsonwebtoken');
 const authUsuario = require('../models/authModel');
 require('dotenv').config();
 
+const createResponse = (success, data, message = 'Operación exitosa') => ({
+  success,
+  message,
+  data,
+});
+
 const authController = {
   login: async (req, res) => {
     const { correo, contrasena } = req.body;
@@ -12,13 +18,16 @@ const authController = {
 
       if (usuario) {
         const token = jwt.sign({ usuario: usuario.correo }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.json({ token });
+        const responseData = { token };
+        res.json(createResponse(true, responseData));
       } else {
-        res.status(401).json({ mensaje: 'Credenciales inválidas' });
+        const errorMessage = 'Credenciales inválidas';
+        res.status(401).json(createResponse(false, null, errorMessage));
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ mensaje: 'Error en el servidor' });
+      const errorMessage = 'Error en el servidor';
+      res.status(500).json(createResponse(false, null, errorMessage));
     }
   },
 };

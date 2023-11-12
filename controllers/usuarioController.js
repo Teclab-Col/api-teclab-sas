@@ -1,14 +1,24 @@
 // controllers/usuarioController.js
 const Usuario = require('../models/usuarioModel');
 
+const createResponse = (success, data, message = 'Operación exitosa') => ({
+  success,
+  message,
+  data,
+});
+
 const usuarioController = {
   obtenerUsuarios: async (req, res) => {
     try {
-      const usuarios = await Usuario.findAll();
-      res.json(usuarios);
+      // Obtener solo las columnas deseadas
+      const usuarios = await Usuario.findAll({
+        attributes: ['id', 'nombre'], // Agrega las columnas que deseas mostrar
+      });
+      res.json(createResponse(true, usuarios));
     } catch (error) {
       console.error(error);
-      res.status(500).json({ mensaje: 'Error al obtener usuarios' });
+      const errorMessage = 'Error al obtener usuarios';
+      res.status(500).json(createResponse(false, null, errorMessage));
     }
   },
 
@@ -17,13 +27,15 @@ const usuarioController = {
     try {
       const usuario = await Usuario.findByPk(usuarioId);
       if (usuario) {
-        res.json(usuario);
+        res.json(createResponse(true, usuario));
       } else {
-        res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        const errorMessage = 'Usuario no encontrado';
+        res.status(404).json(createResponse(false, null, errorMessage));
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ mensaje: 'Error al obtener usuario por ID' });
+      const errorMessage = 'Error al obtener usuario por ID';
+      res.status(500).json(createResponse(false, null, errorMessage));
     }
   },
 
@@ -31,10 +43,11 @@ const usuarioController = {
     const { nombre, correo, contrasena } = req.body;
     try {
       const nuevoUsuario = await Usuario.create({ nombre, correo, contrasena });
-      res.status(201).json(nuevoUsuario);
+      res.status(201).json(createResponse(true, nuevoUsuario));
     } catch (error) {
       console.error(error);
-      res.status(500).json({ mensaje: 'Error al crear usuario' });
+      const errorMessage = 'Error al crear usuario';
+      res.status(500).json(createResponse(false, null, errorMessage));
     }
   },
 
@@ -45,13 +58,15 @@ const usuarioController = {
       const usuario = await Usuario.findByPk(usuarioId);
       if (usuario) {
         await usuario.update({ nombre, correo, contrasena });
-        res.json(usuario);
+        res.json(createResponse(true, usuario));
       } else {
-        res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        const errorMessage = 'Usuario no encontrado';
+        res.status(404).json(createResponse(false, null, errorMessage));
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ mensaje: 'Error al actualizar usuario' });
+      const errorMessage = 'Error al actualizar usuario';
+      res.status(500).json(createResponse(false, null, errorMessage));
     }
   },
 
@@ -61,13 +76,16 @@ const usuarioController = {
       const usuario = await Usuario.findByPk(usuarioId);
       if (usuario) {
         await usuario.destroy();
-        res.json({ mensaje: 'Usuario eliminado correctamente' });
+        const successMessage = 'Usuario eliminado correctamente';
+        res.json(createResponse(true, { mensaje: successMessage }));
       } else {
-        res.status(404).json({ mensaje: 'Usuario no encontrado' });
+        const errorMessage = 'Usuario no encontrado';
+        res.status(404).json(createResponse(false, null, errorMessage));
       }
     } catch (error) {
       console.error(error);
-      res.status(500).json({ mensaje: 'Error al eliminar usuario' });
+      const errorMessage = 'Error al eliminar usuario';
+      res.status(500).json(createResponse(false, null, errorMessage));
     }
   },
 };
