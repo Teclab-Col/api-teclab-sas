@@ -1,7 +1,8 @@
+// usuarioModel.js
 const db = require('../config/db');
 
-const Usuario = {
-  create: async (usuario) => {
+class Usuario {
+  static async create(usuario) {
     const { nombre, correo, contrasena } = usuario;
     const query = 'INSERT INTO usuarios (nombre, correo, contrasena) VALUES (?, ?, ?)';
     const values = [nombre, correo, contrasena];
@@ -12,9 +13,9 @@ const Usuario = {
     } catch (error) {
       throw error;
     }
-  },
+  }
 
-  findAll: async () => {
+  static async findAll() {
     const query = 'SELECT * FROM usuarios';
 
     try {
@@ -23,22 +24,24 @@ const Usuario = {
     } catch (error) {
       throw error;
     }
-  },
+  }
 
-  findByPk: async (id) => {
-    const query = 'SELECT * FROM usuarios WHERE id = ?';
-    const values = [id];
+    static async findByPk(id) {
+      const query = 'SELECT * FROM usuarios WHERE id = ?';
+      const values = [id];
 
-    try {
-      const usuario = await db.query(query, values);
-      return usuario;
-    } catch (error) {
-      throw error;
-    }
-  },
+      try {
+          const [usuario] = await db.query(query, values);
 
-  findByPk: async (id, nuevoUsuario) => {
-    const { nombre, correo, contrasena } = nuevoUsuario;
+          // Si no se encontró el usuario, devolver null
+          return usuario.length > 0 ? usuario[0] : null;
+      } catch (error) {
+          throw error;
+      }
+  }
+
+  static async update(id, usuario) {
+    const { nombre, correo, contrasena } = usuario;
     const query = 'UPDATE usuarios SET nombre = ?, correo = ?, contrasena = ? WHERE id = ?';
     const values = [nombre, correo, contrasena, id];
 
@@ -48,9 +51,9 @@ const Usuario = {
     } catch (error) {
       throw error;
     }
-  },
+  }
 
-  findByPk: async (id) => {
+  static async deleteByPk(id) {
     const query = 'DELETE FROM usuarios WHERE id = ?';
     const values = [id];
 
@@ -60,7 +63,7 @@ const Usuario = {
     } catch (error) {
       throw error;
     }
-  },
-};
+  }
+}
 
 module.exports = Usuario;

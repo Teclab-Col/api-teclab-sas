@@ -1,6 +1,6 @@
-// controllers/authController.js
+// controllers/AuthController.js
 const jwt = require('jsonwebtoken');
-const authUsuario = require('../models/authModel');
+const AuthModel = require('../models/authModel');
 require('dotenv').config();
 
 const createResponse = (success, data, message = 'Operación exitosa') => ({
@@ -9,12 +9,12 @@ const createResponse = (success, data, message = 'Operación exitosa') => ({
   data,
 });
 
-const authController = {
-  login: async (req, res) => {
+class AuthController {
+  async login(req, res) {
     const { correo, contrasena } = req.body;
 
     try {
-      const usuario = await authUsuario.obtenerPorCredenciales(correo, contrasena);
+      const usuario = await AuthModel.obtenerPorCredenciales(correo, contrasena);
 
       if (usuario) {
         const token = jwt.sign({ usuario: usuario.correo }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -29,7 +29,7 @@ const authController = {
       const errorMessage = 'Error en el servidor';
       res.status(500).json(createResponse(false, null, errorMessage));
     }
-  },
-};
+  }
+}
 
-module.exports = authController;
+module.exports = AuthController;

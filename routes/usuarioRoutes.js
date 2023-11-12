@@ -1,14 +1,19 @@
 // usuarioRoutes.js
 const express = require('express');
 const router = express.Router();
-const usuarioController = require('../controllers/usuarioController');
-const authMiddleware = require('../middlewares/authMiddleware');
+const UsuarioController = require('../controllers/usuarioController');
+const AuthMiddleware = require('../middlewares/authMiddleware');
+const multer = require('multer');
+
+// Configura multer
+const storage = multer.memoryStorage(); // Puedes cambiarlo según tus necesidades
+const upload = multer({ storage: storage });
 
 // Rutas CRUD para usuarios
-router.get('/', authMiddleware.verificarToken, usuarioController.obtenerUsuarios);
-router.get('/:id', authMiddleware.verificarToken, usuarioController.obtenerUsuarioPorId);
-router.post('/', authMiddleware.verificarToken, usuarioController.crearUsuario);
-router.put('/:id', authMiddleware.verificarToken, usuarioController.actualizarUsuario);
-router.delete('/:id', authMiddleware.verificarToken, usuarioController.eliminarUsuario);
+router.get('/', AuthMiddleware.verificarToken, UsuarioController.obtenerUsuarios);
+router.get('/:id', AuthMiddleware.verificarToken, UsuarioController.obtenerUsuarioPorId);
+router.post('/', AuthMiddleware.verificarToken, upload.single('archivo'), UsuarioController.crearUsuario);
+router.put('/:id', AuthMiddleware.verificarToken, upload.single('archivo'), UsuarioController.actualizarUsuario);
+router.delete('/:id', AuthMiddleware.verificarToken, UsuarioController.eliminarUsuario);
 
 module.exports = router;
