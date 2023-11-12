@@ -1,0 +1,6 @@
+DB_HOST=Your_Host
+DB_USER=Your_User
+DB_PASSWORD=Your_Password
+DB_DATABASE=Your_DataBase
+
+JWT_SECRET=Your_Secret
