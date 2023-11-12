@@ -1,4 +1,7 @@
 // app.js
+const NodeCache = require("node-cache");
+const cache = new NodeCache();
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const usuarioRoutes = require('./routes/usuarioRoutes');
