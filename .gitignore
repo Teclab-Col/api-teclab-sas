@@ -1,0 +1,12 @@
+# Ignorar archivos temporales
+*.tmp
+
+# Ignorar archivos compilados
+*.class
+*.jar
+
+# Ignorar la carpeta de dependencias
+/lib/
+
+# Ignorar archivos de configuración específicos
+.env
