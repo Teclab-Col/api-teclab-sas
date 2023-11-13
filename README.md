@@ -1,4 +1,4 @@
-# Mi Proyecto
+# Api Teclab S.A.S
 
 Este es un proyecto de ejemplo con una estructura básica para una aplicación Node.js con autenticación mediante JWT.
 
