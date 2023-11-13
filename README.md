@@ -11,8 +11,8 @@ Asegúrate de tener Node.js y npm instalados en tu sistema.
 
 ## Configuración
 
-1. Clona el repositorio: `git clone https://github.com/tu-usuario/mi-proyecto.git`
-2. Entra al directorio del proyecto: `cd mi-proyecto`
+1. Clona el repositorio: `git clone https://github.com/Teclab-Col/api-teclab-sas.git`
+2. Entra al directorio del proyecto: `cd api-teclab-sas`
 3. Instala las dependencias: `npm install`
 4. Configura las variables de entorno creando un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
